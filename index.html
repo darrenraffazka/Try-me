@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A Letter For You</title>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #7a1f3d;
+      font-family: Georgia, serif;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .letter {
+      background: #fff7f8;
+      max-width: 440px;
+      width: 100%;
+      padding: 36px 28px;
+      border-radius: 6px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      text-align: center;
+    }
+
+    .letter h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      color: #7a1f3d;
+    }
+
+    .letter p {
+      margin: 0 0 28px;
+      color: #5a3a44;
+      line-height: 1.6;
+    }
+
+    .heart {
+      font-size: 2.4rem;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: font-size 0.3s, padding 0.3s, left 0.25s, top 0.25s;
+    }
+
+    #yes {
+      background: #d6335f;
+      color: white;
+      font-size: 1.1rem;
+      padding: 12px 28px;
+    }
+
+    #no {
+      background: #e6d3d8;
+      color: #5a3a44;
+      font-size: 1rem;
+      padding: 10px 22px;
+    }
+
+    #answer {
+      display: none;
+      color: #7a1f3d;
+      font-size: 1.5rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="letter">
+
+    <div id="question">
+      <span class="heart">💌</span>
+      <h1>Do you love me?</h1>
+      <p>I made this just for you. Please choose carefully.</p>
+
+      <div class="buttons">
+        <button id="yes">Yes</button>
+        <button id="no">No</button>
+      </div>
+    </div>
+
+    <div id="answer">
+      <span class="heart">💖</span>
+      I knew it! I love you too.
+    </div>
+
+  </div>
+
+  <script>
+    const yesButton = document.getElementById("yes");
+    const noButton = document.getElementById("no");
+    const question = document.getElementById("question");
+    const answer = document.getElementById("answer");
+
+    let yesSize = 1.1;
+
+    const noMessages = [
+      "No",
+      "Are you sure?",
+      "Really?",
+      "Think again!",
+      "Pretty please?",
+      "Last chance...",
+      "Just say yes!"
+    ];
+    let noClicks = 0;
+
+    // The No button runs away and Yes gets bigger
+    function runAway(event) {
+      event.preventDefault();
+      noClicks++;
+      yesSize += 0.7;
+
+      yesButton.style.fontSize = yesSize + "rem";
+      yesButton.style.padding = (yesSize * 10) + "px " + (yesSize * 22) + "px";
+
+      noButton.textContent = noMessages[Math.min(noClicks, noMessages.length - 1)];
+
+      // Jump to a random spot on the screen
+      const maxX = window.innerWidth - noButton.offsetWidth - 10;
+      const maxY = window.innerHeight - noButton.offsetHeight - 10;
+      noButton.style.position = "fixed";
+      noButton.style.zIndex = "10";
+      noButton.style.left = Math.max(10, Math.random() * maxX) + "px";
+      noButton.style.top = Math.max(10, Math.random() * maxY) + "px";
+    }
+
+    noButton.addEventListener("mouseover", runAway);
+    noButton.addEventListener("touchstart", runAway);
+    noButton.addEventListener("click", runAway);
+
+    yesButton.addEventListener("click", function () {
+      question.style.display = "none";
+      answer.style.display = "block";
+      noButton.style.display = "none";
+    });
+  </script>
+</body>
+</html>
